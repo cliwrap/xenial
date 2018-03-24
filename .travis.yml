@@ -1,0 +1,47 @@
+services:
+- docker
+script:
+- docker build -t wtanaka/xenial-uid .
+# Check user id
+- >
+  docker run --rm -e "HOSTUID=`id -u`" -v "`pwd`:/work" wtanaka/xenial-uid
+  id -u 2>&1 | grep "^`id -u`$"
+# Check group id
+- >
+  docker run --rm -e "HOSTUID=`id -u`" -e "HOSTGID=`id -g`" -v "`pwd`:/work"
+  wtanaka/xenial-uid id -g 2>&1 | grep "^`id -g`$"
+# Create a file
+- >
+  docker run
+  --rm
+  -e "HOSTUID=`id -u`"
+  -v "`pwd`:/work"
+  wtanaka/xenial-uid
+  touch ActapWuSwyk2
+  2>&1 && [ -f ActapWuSwyk2 ]
+# Make sure the container works normally
+- docker run --rm wtanaka/xenial-uid whoami | grep '^root$'
+# Make sure the container works normally
+- docker run --rm wtanaka/xenial-uid pwd | grep '^/$'
+# Test volume mount only
+- docker run --rm -v "`pwd`:/work" wtanaka/xenial-uid pwd | grep '^/work$'
+# Test volume mount only
+- docker run --rm -v "`pwd`:/work" wtanaka/xenial-uid whoami | grep '^root$'
+# Test user id only
+- docker run --rm -e "HOSTUID=`id -u`" wtanaka/xenial-uid pwd | grep '^/home/hostuser$'
+# Test user id only
+- docker run --rm -e "HOSTUID=`id -u`" wtanaka/xenial-uid whoami | grep '^hostuser$'
+# Make sure it is still possible to use apt
+- docker run --rm wtanaka/xenial-uid sh -c "sudo apt-get update && sudo apt-get -y install less"
+# Make sure it is still possible to use apt
+- docker run --rm wtanaka/xenial-uid sh -c "sudo apt-get update && sudo apt-get -y install texlive-latex-base"
+after_success:
+- >
+  curl -H "Content-Type: application/json"
+  --data '{"source_type": "Branch", "source_name": "master"}'
+  -X POST
+  https://registry.hub.docker.com/u/wtanaka/xenial-uid/trigger/653e0d03-132d-4368-be5e-82bf67d54a32/
+notifications:
+  email:
+    recipients:
+      secure: HhCb2BHSWsrIkgc0z7hyCVjr9SIdKe76mw9mmj7PeIj7lSdslX3/S/6tLsBPngK8e6NxbKkSWGVxL9aWgPnS1H2Di/5RgJCKkBpiVsrfLgNJXfaMw7UAEnfehruYwn541GRxOgT8WMEU4vP52OWthxyJmQ21QbSoUmYQOpAjLTxQ/+0DNied5kHOUIamy7gbl8WeBPm8018Z3XJwbAUxIetuhhoXYHnLlZ7hMzlGKJisf4upDznp6fJMtoxNpdFa7Vr5G6vuQMOdIGpM6Iz3sss4NNGhiA4CPDEzoiIvFhhuNubKyOLcnZs6Y4h+mNZw8zHJWovo75fViBDxH+4UJYAr5aP7ZOIAe2QBnRcwtDKjkBglF3LmjpXLKSyYQn0BzAwJ1zHHPt/1b58WNT9qFRHd0Lnoh5hfdDVBscds9M0Itg5k6sUK8MBVvmCgNQ9MdmdGn8W7lWakA+PvuZsSYMG/fKcPt1ode90homcRRkpMI9XRMdbOzIoc3P7Nn8H7+gLSorpRCqdTRDESf+aXl389DHCcQr7HkhXqAO3aaS0OY8Yvo+ZE8sirx9RLMbrNsfmFMZt2gn0gRTdNVbSwA4X4lZ4Yt94AlA0ryBMeWSJQ4/vksU7u5ycfp0Z2q1sGBspj8IIhWKQUCnxnFh4N4GcpvmT9VC8SQryuHh70gSY=
