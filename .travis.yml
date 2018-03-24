@@ -40,7 +40,7 @@ after_success:
   curl -H "Content-Type: application/json"
   --data '{"source_type": "Branch", "source_name": "master"}'
   -X POST
-  https://registry.hub.docker.com/u/wtanaka/xenial-uid/trigger/653e0d03-132d-4368-be5e-82bf67d54a32/
+  https://registry.hub.docker.com/u/wtanaka/xenial-uid/trigger/564e50f9-dfb1-4ce2-923b-134cccf3d8ae/
 notifications:
   email:
     recipients:
