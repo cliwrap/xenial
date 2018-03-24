@@ -8,6 +8,8 @@ environment variables from outside the container, so that any files
 created in a volume mount can be created as the user and group who
 initiated `docker run`.
 
+Read more at [https://wtanaka.com/node/8271](https://wtanaka.com/node/8271)
+
 To download: [`docker pull wtanaka/xenial-uid`](https://hub.docker.com/r/wtanaka/xenial-uid/)
 
 Examples
@@ -15,17 +17,8 @@ Examples
 
 Create a file called `myfile` in the current directory
 
-```docker run --rm
--e "HOSTUID=`id -u`"
--v "`pwd`:/work"
-wtanaka/xenial-uid
-touch myfile```
+```docker run --rm -e "HOSTUID=`id -u`" -v "`pwd`:/work" wtanaka/xenial-uid touch myfile```
 
 Create a file with the correct uid and gid in the current directory
 
-```docker run --rm
--e "HOSTUID=`id -u`"
--e "HOSTGID=`id -g`"
--v "`pwd`:/work"
-wtanaka/xenial-uid
-touch myfile```
+```docker run --rm -e "HOSTUID=`id -u`" -e "HOSTGID=`id -g`" -v "`pwd`:/work" wtanaka/xenial-uid touch myfile```
