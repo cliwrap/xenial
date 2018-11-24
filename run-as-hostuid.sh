@@ -68,7 +68,11 @@ if [ -n "$HOSTUID" ]; then
 fi
 
 if [ -n "$HOSTUID" ]; then
-  exec su - "$HOSTUSERNAME" -c "$COMMAND"
+  exec env HOME="$HOSTHOMEDIR" \
+    USER="$HOSTUSERNAME" \
+    LOGNAME="$HOSTUSERNAME" \
+    PATH=/bin:/usr/bin \
+    su -m "$HOSTUSERNAME" -c "cd $HOSTHOMEDIR; $COMMAND"
 else
   eval "$COMMAND"
 fi
