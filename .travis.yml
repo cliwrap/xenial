@@ -35,6 +35,10 @@ script:
 - docker run --rm wtanaka/xenial-uid sh -c "sudo apt-get update && sudo apt-get -y install less"
 # Make sure it is still possible to use apt
 - docker run --rm wtanaka/xenial-uid sh -c "sudo apt-get update && sudo apt-get -y install texlive-latex-base"
+# Make sure environment passed through
+- >
+  docker run --rm -e FOOBAR=baz -e "HOSTUID=`id -u`" -e "HOSTGID=`id -g`" -v "`pwd`:/work"
+  wtanaka/xenial-uid env | grep "^FOOBAR=baz"
 after_success:
 - >
   curl -H "Content-Type: application/json"
