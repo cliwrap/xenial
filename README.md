@@ -1,5 +1,5 @@
 [![Build
-Status](https://travis-ci.org/wtanaka/docker-xenial-uid.svg?branch=master)](https://travis-ci.org/wtanaka/docker-xenial-uid)
+Status](https://travis-ci.com/cliwrap/xenial.svg?branch=master)](https://travis-ci.com/cliwrap/xenial)
 
 The `Dockerfile` in this repository builds a `ubuntu:16.04` container
 (with `apt-get update` and `apt-get upgrade` run) which lets you run
