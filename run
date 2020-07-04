@@ -25,5 +25,5 @@ exec docker run \
   -e "HOSTUID=`id -u`" \
   -e "HOSTGID=`id -g`" \
   -v "`pwd`:/work" \
-  wtanaka/xenial-uid \
+  cliwrap/xenial \
   "$@"
