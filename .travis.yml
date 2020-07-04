@@ -1,50 +1,50 @@
 services:
 - docker
 script:
-- docker build -t wtanaka/xenial-uid .
+- docker build -t cliwrap/xenial .
 # Check user id
 - >
-  docker run --rm -e "HOSTUID=`id -u`" -v "`pwd`:/work" wtanaka/xenial-uid
+  docker run --rm -e "HOSTUID=`id -u`" -v "`pwd`:/work" cliwrap/xenial
   id -u 2>&1 | grep "^`id -u`$"
 # Check group id
 - >
   docker run --rm -e "HOSTUID=`id -u`" -e "HOSTGID=`id -g`" -v "`pwd`:/work"
-  wtanaka/xenial-uid id -g 2>&1 | grep "^`id -g`$"
+  cliwrap/xenial id -g 2>&1 | grep "^`id -g`$"
 # Create a file
 - >
   docker run
   --rm
   -e "HOSTUID=`id -u`"
   -v "`pwd`:/work"
-  wtanaka/xenial-uid
+  cliwrap/xenial
   touch ActapWuSwyk2
   2>&1 && [ -f ActapWuSwyk2 ]
 # Make sure the container works normally
-- docker run --rm wtanaka/xenial-uid whoami | grep '^root$'
+- docker run --rm cliwrap/xenial whoami | grep '^root$'
 # Make sure the container works normally
-- docker run --rm wtanaka/xenial-uid pwd | grep '^/$'
+- docker run --rm cliwrap/xenial pwd | grep '^/$'
 # Test volume mount only
-- docker run --rm -v "`pwd`:/work" wtanaka/xenial-uid pwd | grep '^/work$'
+- docker run --rm -v "`pwd`:/work" cliwrap/xenial pwd | grep '^/work$'
 # Test volume mount only
-- docker run --rm -v "`pwd`:/work" wtanaka/xenial-uid whoami | grep '^root$'
+- docker run --rm -v "`pwd`:/work" cliwrap/xenial whoami | grep '^root$'
 # Test user id only
-- docker run --rm -e "HOSTUID=`id -u`" wtanaka/xenial-uid pwd | grep '^/home/hostuser$'
+- docker run --rm -e "HOSTUID=`id -u`" cliwrap/xenial pwd | grep '^/home/hostuser$'
 # Test user id only
-- docker run --rm -e "HOSTUID=`id -u`" wtanaka/xenial-uid whoami | grep '^hostuser$'
+- docker run --rm -e "HOSTUID=`id -u`" cliwrap/xenial whoami | grep '^hostuser$'
 # Make sure it is still possible to use apt
-- docker run --rm wtanaka/xenial-uid sh -c "sudo apt-get update && sudo apt-get -y install less"
+- docker run --rm cliwrap/xenial sh -c "sudo apt-get update && sudo apt-get -y install less"
 # Make sure it is still possible to use apt
-- docker run --rm wtanaka/xenial-uid sh -c "sudo apt-get update && sudo apt-get -y install texlive-latex-base"
+- docker run --rm cliwrap/xenial sh -c "sudo apt-get update && sudo apt-get -y install texlive-latex-base"
 # Make sure environment passed through
 - >
   docker run --rm -e FOOBAR=baz -e "HOSTUID=`id -u`" -e "HOSTGID=`id -g`" -v "`pwd`:/work"
-  wtanaka/xenial-uid env | grep "^FOOBAR=baz"
+  cliwrap/xenial env | grep "^FOOBAR=baz"
 after_success:
 - >
   curl -H "Content-Type: application/json"
   --data '{"source_type": "Branch", "source_name": "master"}'
   -X POST
-  https://registry.hub.docker.com/u/wtanaka/xenial-uid/trigger/564e50f9-dfb1-4ce2-923b-134cccf3d8ae/
+  https://hub.docker.com/api/build/v1/source/30cc9d30-ee98-46d3-80d4-01d3e961649b/trigger/658768b1-3335-474c-baae-cbf313321c4a/call/
 notifications:
   email:
     recipients:
