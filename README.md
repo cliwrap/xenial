@@ -10,15 +10,15 @@ initiated `docker run`.
 
 Read more at [https://wtanaka.com/node/8271](https://wtanaka.com/node/8271)
 
-To download: [`docker pull wtanaka/xenial-uid`](https://hub.docker.com/r/wtanaka/xenial-uid/)
+To download: [`docker pull cliwrap/xenial`](https://hub.docker.com/r/cliwrap/xenial/)
 
 Examples
 --------
 
 Create a file called `myfile` in the current directory
 
-```docker run --rm -e "HOSTUID=`id -u`" -v "`pwd`:/work" wtanaka/xenial-uid touch myfile```
+```docker run --rm -e "HOSTUID=`id -u`" -v "`pwd`:/work" cliwrap/xenial touch myfile```
 
 Create a file with the correct uid and gid in the current directory
 
-```docker run --rm -e "HOSTUID=`id -u`" -e "HOSTGID=`id -g`" -v "`pwd`:/work" wtanaka/xenial-uid touch myfile```
+```docker run --rm -e "HOSTUID=`id -u`" -e "HOSTGID=`id -g`" -v "`pwd`:/work" cliwrap/xenial touch myfile```
